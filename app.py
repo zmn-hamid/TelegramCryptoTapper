@@ -27,9 +27,9 @@ counter = 0
 while True:
     counter += 1
     print(f"tapping #{counter}...")
-    time_before_tapping = time.time()
     number_of_taps_needed = MAXIMUM_NUMBER_OF_TAPS
     while True:
+        time_before_tapping = time.time()
         do_a_set_of_tapping(number_of_taps_needed)
         number_of_taps_refilled = (time.time() - time_before_tapping) * TAP_PER_COOLDOWN
         if number_of_taps_refilled < 5:

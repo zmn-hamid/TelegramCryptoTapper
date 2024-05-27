@@ -1,4 +1,4 @@
-WHERE_TO_TAP = 540, 1200
+WHERE_TO_TAP = 542, 761  # X Y coordinate
 REST_BETWEEN_EACH_TAP = (0.01, 0.1)  # a random number between these, in seconds
 MAXIMUM_NUMBER_OF_TAPS = 500
 COOLDOWN_TIME = 500  # in seconds

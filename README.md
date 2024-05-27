@@ -1,6 +1,8 @@
 # Purpose
 
 to be used in Telegram crypto minings apps that work with tapping.
+originally made for TapSwap bot, but can be used with other bots as well I guess.
+this tutorial needs programming knowledge
 
 # How to use
 
@@ -16,6 +18,7 @@ to be used in Telegram crypto minings apps that work with tapping.
 
 change it according to your situation
 to test where it taps, run `adb shell input keyevent X Y` and replace X Y with those numbers
+you can find the exact coordinate using "show pointer location" in developer options of your phone
 
 # Copyright
 
