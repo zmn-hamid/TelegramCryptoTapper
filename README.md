@@ -1,8 +1,8 @@
-# Purpose
+# Telegram Crypto Bot Auto Tapper
 
 to be used in Telegram crypto minings apps that work with tapping.
 originally made for TapSwap bot, but can be used with other bots as well I guess.
-this tutorial needs programming knowledge
+- has anti detection/spam and can keep the screen awake (is on by default)
 
 # How to use
 
