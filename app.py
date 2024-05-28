@@ -1,52 +1,46 @@
-import os, time, random
+from main import do_a_set_of_tapping, take_screenshot, ocr, find_remaining
 from config import (
-    WHERE_TO_TAP,
-    REST_BETWEEN_EACH_TAP,
-    MAXIMUM_NUMBER_OF_TAPS,
+    SCREENSHOT_PATH,
     COOLDOWN_TIME,
-    KEEP_SCREEN_ON,
-    WHERE_TO_TAP_FOR_WAKING,
-    REST_BETWEEN_EACH_WAKE_TAP,
+    MAXIMUM_TIME_RUNNING,
+    COOLDOWN_TAPS_LEFT,
 )
+import time, random
+from datetime import datetime, timedelta
 
-TAP_PER_COOLDOWN = MAXIMUM_NUMBER_OF_TAPS / COOLDOWN_TIME
-# used for calulating how much taps are available after a set of tapping
-
-
-def do_tapping(tap_coordinate):
-    os.system(f"adb shell input tap {tap_coordinate[0]} {tap_coordinate[1]}")
+END_AT = datetime.now() + timedelta(seconds=MAXIMUM_TIME_RUNNING)
+MAX_CHUNK_SIZE = 500
 
 
-def do_a_set_of_tapping(number_of_taps: int):
-    for _ in range(int(number_of_taps)):
-        do_tapping(WHERE_TO_TAP)
-        time.sleep(random.uniform(*REST_BETWEEN_EACH_TAP))
+def time_exceeded():
+    return datetime.now() >= END_AT
 
 
-counter = 0
-while True:
-    counter += 1
-    print(f"tapping #{counter}...")
-    number_of_taps_needed = MAXIMUM_NUMBER_OF_TAPS
+# do tapping until finished
+time_before_operation = time.time()
+while not time_exceeded():
+    number_of_taps = find_remaining(ocr(take_screenshot(SCREENSHOT_PATH)))
     while True:
-        time_before_tapping = time.time()
-        do_a_set_of_tapping(number_of_taps_needed)
-        number_of_taps_refilled = (time.time() - time_before_tapping) * TAP_PER_COOLDOWN
-        if number_of_taps_refilled < 5:
-            # just cooldown man
-            break
-        number_of_taps_needed = number_of_taps_refilled
+        # do tapping
+        print(f"tapping at {datetime.now()}...")
+        chunks = [MAX_CHUNK_SIZE] * (number_of_taps // MAX_CHUNK_SIZE) + (
+            [number_of_taps % MAX_CHUNK_SIZE] if number_of_taps % MAX_CHUNK_SIZE else []
+        )
+        for chunk in chunks:
+            do_a_set_of_tapping(chunk)
+            if len(chunks) > 1:
+                time.sleep(random.random(8, 12))
 
-    print("resting...")
-    if not KEEP_SCREEN_ON:
-        REST_BETWEEN_EACH_TAP = COOLDOWN_TIME  # so it would end before the second rest
-    total_time_sleeped = 0
-    while True:
-        # sleep
-        time.sleep(REST_BETWEEN_EACH_WAKE_TAP)
-        total_time_sleeped += REST_BETWEEN_EACH_WAKE_TAP
-        if total_time_sleeped >= COOLDOWN_TIME:
-            break
+        # check how much left
+        remaining = find_remaining(ocr(take_screenshot(SCREENSHOT_PATH)))
+        number_of_taps = remaining
 
-        # wake up
-        do_tapping(WHERE_TO_TAP_FOR_WAKING)
+        # check if less than 5 exit
+        if number_of_taps < COOLDOWN_TAPS_LEFT:
+            break
+    if time_exceeded():
+        break
+
+    # cooldown
+    print(f"resting at {datetime.now()}...")
+    time.sleep(COOLDOWN_TIME)
