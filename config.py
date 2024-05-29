@@ -1,13 +1,13 @@
 WHERE_TO_TAP = 542, 761  # X Y coordinate
 
-MAXIMUM_NUMBER_OF_TAPS = 500
+MAXIMUM_NUMBER_OF_TAPS = 4000
 
-COOLDOWN_TIME = 500  # in seconds
-# calulate using the script or just manually find it out
-# cooldown time is the time it takes for the app to refill a full set of taps
-COOLDOWN_TAPS_LEFT = 10  # stars cooling down when this much is left
+TAP_WEIGHT = 4  # how man taps does each tap have (4 means when you tap, it adds 4 taps)
 
-MAXIMUM_TIME_RUNNING = 5 * 60 * 60  # in seconds
+COOLDOWN_TIME = 200  # in seconds
+COOLDOWN_TAPS_LEFT = 20  # starts cooling down when this much is left
+
+MAXIMUM_TIME_RUNNING = 6 * 60 * 60  # in seconds
 # maximum seconds of running the script (is ignored during the tapping or resting)
 
 

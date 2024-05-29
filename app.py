@@ -4,6 +4,7 @@ from config import (
     COOLDOWN_TIME,
     MAXIMUM_TIME_RUNNING,
     COOLDOWN_TAPS_LEFT,
+    TAP_WEIGHT,
 )
 import time, random
 from datetime import datetime, timedelta
@@ -19,25 +20,29 @@ def time_exceeded():
 # do tapping until finished
 time_before_operation = time.time()
 while not time_exceeded():
-    number_of_taps = find_remaining(ocr(take_screenshot(SCREENSHOT_PATH)))
+    number_of_taps = int(
+        find_remaining(ocr(take_screenshot(SCREENSHOT_PATH))) / TAP_WEIGHT
+    )
+    print(f"tapping at {datetime.now()}...")
     while True:
         # do tapping
-        print(f"tapping at {datetime.now()}...")
         chunks = [MAX_CHUNK_SIZE] * (number_of_taps // MAX_CHUNK_SIZE) + (
             [number_of_taps % MAX_CHUNK_SIZE] if number_of_taps % MAX_CHUNK_SIZE else []
         )
         for chunk in chunks:
             do_a_set_of_tapping(chunk)
             if len(chunks) > 1:
-                time.sleep(random.random(8, 12))
+                time.sleep(random.uniform(8, 12))
 
         # check how much left
         remaining = find_remaining(ocr(take_screenshot(SCREENSHOT_PATH)))
-        number_of_taps = remaining
 
         # check if less than 5 exit
-        if number_of_taps < COOLDOWN_TAPS_LEFT:
+        if remaining < COOLDOWN_TAPS_LEFT:
             break
+
+        # calulate new tapping amount
+        number_of_taps = int(remaining / TAP_WEIGHT)
     if time_exceeded():
         break
 
