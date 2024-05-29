@@ -35,7 +35,7 @@ def ocr(image_path: str):
 
 def find_remaining(ocr_text: str):
     """returns remaining and total"""
-    all_the_numbers = re.findall(r"\d+", ocr_text)
+    all_the_numbers = re.findall(r"\d+", ocr_text)[::-1]
     for idx, number in enumerate(all_the_numbers):
         if int(number) == MAXIMUM_NUMBER_OF_TAPS:
-            return int(all_the_numbers[:idx][::-1][0])
+            return int(all_the_numbers[idx + 1])
