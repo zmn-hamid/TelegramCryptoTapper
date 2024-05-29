@@ -8,12 +8,14 @@ You can use the bot whenever you want. It has a minor anti-spam built-in functio
 
 # How to use
 
-- Install python
-- Install scrcpy
-- Add ADB to path (the folder of scrcpy)
-- Verify you can execute events
+1. Install scrcpy
+2. Add ADB to environment path (the folder of scrcpy)
+3. Verify you can execute events
     `adb shell input keyevent A` (types "a")
-- Run the app `python app.py`
+4.  Install Python and add to path
+5.  Install [Tesseract OCR](https://github.com/UB-Mannheim/tesseract/wiki) for your OS
+6. Install the requirements: `pip install -r requirements.txt`
+7. Run the app: `python app.py`
 
 # Configuration
 
