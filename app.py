@@ -17,7 +17,6 @@ from config import (
     TAP_WEIGHT,
     WHERE_TO_TAP,
 )
-from main import do_a_set_of_tapping, do_tapping, find_remaining, ocr, take_screenshot
 
 END_AT = datetime.now() + timedelta(seconds=MAXIMUM_TIME_RUNNING)
 MAX_CHUNK_SIZE = 500
